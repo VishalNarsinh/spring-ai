@@ -1,6 +1,7 @@
 package com.example.springai.config;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,5 +18,10 @@ public class ApplicationConfiguration {
 				kindly inform them that you can only assist with queries related to\s
 				HR policies.
 				""").defaultUser("How can you help me?").build();
+	}
+
+	@Bean
+	public OpenAiChatOptions openAiChatOptions(){
+		return OpenAiChatOptions.builder().model("gpt-5.2").maxCompletionTokens(300).temperature(0.7).build();
 	}
 }

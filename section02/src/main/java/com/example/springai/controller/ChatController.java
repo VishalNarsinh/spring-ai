@@ -27,4 +27,13 @@ public class ChatController {
 		return chatService.chatStream(message);
 	}
 
+	@GetMapping(value = "/email", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> emailResponse(@RequestParam String customerName, @RequestParam String customerMessage) {
+		return ResponseEntity.ok(chatService.emailResponse(customerName, customerMessage));
+	}
+
+	@GetMapping(value = "/prompt-stuffing", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> promptStuffing(@RequestParam String message) {
+		return ResponseEntity.ok(chatService.promptStuffing(message));
+	}
 }

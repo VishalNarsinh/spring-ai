@@ -3,6 +3,9 @@ package com.example.springai.impl;
 import com.example.springai.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.openai.OpenAiChatOptions;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -11,6 +14,13 @@ import reactor.core.publisher.Flux;
 public class ChatServiceImpl implements ChatService {
 
 	private final ChatClient client;
+	private final OpenAiChatOptions openAiChatOptions;
+
+	@Value("classpath:/promptTemplates/email_response_prompt_template.st")
+	Resource emailResponseTemplate;
+
+	@Value("classpath:/promptTemplates/system_prompt_template.st")
+	Resource systemPromptTemplate;
 
 	@Override
 	public String chat(String prompt) {
@@ -27,5 +37,25 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public Flux<String> chatStream(String prompt) {
 		return client.prompt(prompt).stream().content();
+	}
+
+	@Override
+	public String emailResponse(String customerName, String customerMessage) {
+		return client.prompt()
+				.system("""
+						You are a professional customer service assistant which helps drafting email
+						responses to improve the productivity of the customer support team
+						""")
+				.user(promptTemplateSpec -> promptTemplateSpec.text(emailResponseTemplate)
+						.param("customerName", customerName)
+						.param("customerMessage", customerMessage))
+				.options(openAiChatOptions)
+				.call()
+				.content();
+	}
+
+	@Override
+	public String promptStuffing(String prompt) {
+		return client.prompt().system(systemPromptTemplate).user(prompt).options(openAiChatOptions).call().content();
 	}
 }
