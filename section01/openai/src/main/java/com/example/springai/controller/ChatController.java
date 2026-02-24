@@ -1,6 +1,6 @@
 package com.example.springai.controller;
 
-import com.example.springai.controller.service.ChatService;
+import com.example.springai.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

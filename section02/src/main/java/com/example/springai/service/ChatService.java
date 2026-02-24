@@ -1,4 +1,4 @@
-package com.example.springai;
+package com.example.springai.service;
 
 import reactor.core.publisher.Flux;
 

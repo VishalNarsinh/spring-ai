@@ -1,6 +1,6 @@
-package com.example.springai.impl;
+package com.example.springai.service.impl;
 
-import com.example.springai.ChatService;
+import com.example.springai.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.openai.OpenAiChatOptions;
