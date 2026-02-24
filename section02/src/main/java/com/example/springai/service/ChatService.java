@@ -11,4 +11,6 @@ public interface ChatService {
 	String emailResponse(String customerName, String customerMessage);
 
 	String promptStuffing(String prompt);
+
+	String openAiChatOpenApi(String prompt);
 }

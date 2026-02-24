@@ -22,7 +22,7 @@ public class ChatController {
 		return ResponseEntity.ok(chatService.chat(message));
 	}
 
-	@GetMapping(value = "/chat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@GetMapping(value = "/chat-stream")
 	public Flux<String> chatStream(@RequestParam String message) {
 		return chatService.chatStream(message);
 	}
@@ -35,5 +35,10 @@ public class ChatController {
 	@GetMapping(value = "/prompt-stuffing", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> promptStuffing(@RequestParam String message) {
 		return ResponseEntity.ok(chatService.promptStuffing(message));
+	}
+
+	@GetMapping(value = "/chat-option", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> openAiChatOpenApi(@RequestParam String message) {
+		return ResponseEntity.ok(chatService.openAiChatOpenApi(message));
 	}
 }

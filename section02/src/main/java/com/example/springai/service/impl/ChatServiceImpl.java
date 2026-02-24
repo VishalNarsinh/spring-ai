@@ -58,4 +58,9 @@ public class ChatServiceImpl implements ChatService {
 	public String promptStuffing(String prompt) {
 		return client.prompt().system(systemPromptTemplate).user(prompt).options(openAiChatOptions).call().content();
 	}
+
+	@Override
+	public String openAiChatOpenApi(String prompt) {
+		return client.prompt(prompt).options(openAiChatOptions).call().content();
+	}
 }
