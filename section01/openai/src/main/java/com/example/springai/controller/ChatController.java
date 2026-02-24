@@ -1,7 +1,7 @@
 package com.example.springai.controller;
 
+import com.example.springai.controller.service.ChatService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,17 +15,16 @@ import reactor.core.publisher.Flux;
 @RequiredArgsConstructor
 public class ChatController {
 
-	private final ChatClient client;
+	private final ChatService chatService;
 
-	@GetMapping(value = "/chat",produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/chat", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> chat(@RequestParam String message) {
-		return ResponseEntity.ok(client.prompt(message).call().content());
+		return ResponseEntity.ok(chatService.chat(message));
 	}
 
-
-	@GetMapping(value = "/chat",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@GetMapping(value = "/chat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public Flux<String> chatStream(@RequestParam String message) {
-		return client.prompt(message).stream().content();
+		return chatService.chatStream(message);
 	}
 
 }

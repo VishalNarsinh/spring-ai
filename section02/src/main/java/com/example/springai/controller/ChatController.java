@@ -1,7 +1,7 @@
 package com.example.springai.controller;
 
+import com.example.springai.ChatService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,23 +15,16 @@ import reactor.core.publisher.Flux;
 @RequiredArgsConstructor
 public class ChatController {
 
-	private final ChatClient client;
+	private final ChatService chatService;
 
 	@GetMapping(value = "/chat", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> chat(@RequestParam String message) {
-		return ResponseEntity.ok(client.prompt().user(message).system("""
-				You are an internal IT helpdesk assistant. Your role is to assist 
-				employees with IT-related issues such as resetting passwords, 
-				unlocking accounts, and answering questions related to IT policies.
-				If a user requests help with anything outside of these 
-				responsibilities, respond politely and inform them that you are 
-				only able to assist with IT support tasks within your defined scope.
-				""").call().content());
+		return ResponseEntity.ok(chatService.chat(message));
 	}
 
 	@GetMapping(value = "/chat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public Flux<String> chatStream(@RequestParam String message) {
-		return client.prompt(message).stream().content();
+		return chatService.chatStream(message);
 	}
 
 }
