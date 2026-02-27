@@ -27,7 +27,7 @@ public class RAGController {
 
 	@Value("classpath:promptTemplates/system_prompt_random_data_template.st")
 	private Resource randomDataPromptTemplate;
-	
+
 	@Value("classpath:promptTemplates/system_prompt_template.st")
 	private Resource hrSystemPromptTemplate;
 
@@ -38,11 +38,11 @@ public class RAGController {
 
 	@GetMapping("/random/chat")
 	public ResponseEntity<String> randomChat(@RequestHeader String username, @RequestParam String message) {
-		SearchRequest searchRequest = SearchRequest.builder().query(message).topK(3).similarityThreshold(0.5).build();
+		/*SearchRequest searchRequest = SearchRequest.builder().query(message).topK(3).similarityThreshold(0.5).build();
 		List<Document> similarDocs = vectorStore.similaritySearch(searchRequest);
-		String similarContext = similarDocs.stream().map(Document::getText).collect(Collectors.joining(System.lineSeparator()));
+		String similarContext = similarDocs.stream().map(Document::getText).collect(Collectors.joining(System.lineSeparator()));*/
 		String response = chatMemoryChatClient.prompt()
-				.system(promptSystemSpec -> promptSystemSpec.text(randomDataPromptTemplate).param("documents", similarContext))
+				/*.system(promptSystemSpec -> promptSystemSpec.text(randomDataPromptTemplate).param("documents", similarContext))*/
 				.advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, username))
 				.user(message)
 				.call()
@@ -53,11 +53,11 @@ public class RAGController {
 
 	@GetMapping("/document/chat")
 	public ResponseEntity<String> documentChat(@RequestHeader String username, @RequestParam String message) {
-		SearchRequest searchRequest = SearchRequest.builder().query(message).topK(3).similarityThreshold(0.5).build();
+	/*	SearchRequest searchRequest = SearchRequest.builder().query(message).topK(3).similarityThreshold(0.5).build();
 		List<Document> similarDocs = vectorStore.similaritySearch(searchRequest);
-		String similarContext = similarDocs.stream().map(Document::getText).collect(Collectors.joining(System.lineSeparator()));
+		String similarContext = similarDocs.stream().map(Document::getText).collect(Collectors.joining(System.lineSeparator()));*/
 		String response = chatMemoryChatClient.prompt()
-				.system(promptSystemSpec -> promptSystemSpec.text(hrSystemPromptTemplate).param("documents", similarContext))
+				/*.system(promptSystemSpec -> promptSystemSpec.text(hrSystemPromptTemplate).param("documents", similarContext))*/
 				.advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, username))
 				.user(message)
 				.call()
