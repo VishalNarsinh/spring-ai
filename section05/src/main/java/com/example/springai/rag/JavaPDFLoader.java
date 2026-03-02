@@ -28,7 +28,7 @@ public class JavaPDFLoader {
 		TikaDocumentReader documentReader = new TikaDocumentReader(policyFile);
 		List<Document> extractedDocuments  = documentReader.get();
 		log.info("Loaded {} documents", extractedDocuments .size());
-		TextSplitter textSplitter = TokenTextSplitter.builder().withChunkSize(100).withMaxNumChunks(400).build();
+		TextSplitter textSplitter = TokenTextSplitter.builder().withChunkSize(200).withMaxNumChunks(400).build();
 		List<Document> documentChunks  = textSplitter.split(extractedDocuments );
 		log.info("Chunks created: {}", documentChunks.size());
 		vectorStore.add(documentChunks);
